@@ -5,8 +5,11 @@ import { Picker } from "@react-native-picker/picker";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import RadioForm from "react-native-simple-radio-button";
+import {DatabaseConnected} from '../database/database'
 
-const Home = ({navgation }) => {
+const db =  DatabaseConnected.getConnection()
+
+const Home = ({navigation }) => {
     const [name, setName] = useState('')
     const [date, setDate] = useState('01-01-2000')
     const [destination ,setDestination] = useState('')
@@ -34,9 +37,37 @@ const Home = ({navgation }) => {
         alert("Please choose required risk assessment!")
         return
     } else {
+      try {
+        db.transaction((tx) => {
+          tx.executeSql(
+            "INSERT INTO Detail (name_detail, date_detail, destination_detail, require_detail, description_detail) VALUES (?,?,?,?,?)",
+            [name, date, destination, require, description],
+            (tx, results) => {
+              console.log(results.rowsAffected);
+            }
+          );
+        });
+        navigation.navigate("Home")
+      } catch (error) {
+        console.log(error);
+      }
         return alert(`Name: ${name}, Destination: ${destination}, Date of the Trip: ${date}, Risk Assessment: ${require}, Description: ${description}`)
     } 
     }
+
+    const createTable = () => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "CREATE TABLE IF NOT EXISTS Detail(Id INTEGER PRIMARY KEY AUTOINCREMENT, name_detail VARCHAR(255), date_detail VARCHAR(255), destination_detail VARCHAR(255), require_detail VARCHAR(255), description_detail VARCHAR(255))",
+        );
+      });
+    };
+
+    useEffect(() => {
+      createTable();
+    },[])
+
+
   return (
     <SafeAreaView style={styles.HomeContainer}>
     <View style={styles.Body} >
