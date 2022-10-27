@@ -55,6 +55,22 @@ const Home = ({navigation }) => {
     } 
     }
 
+    const checkData = () => {
+      try {
+        db.transaction((tx) => {
+          tx.executeSql("SELECT name FROM sqlite_master WHERE type='table' AND name='Detail'", [], (tx, result) => {
+            console.log('item:', result.rowsAffected.length);
+            var len = result.rows.length;
+            if (len > 0) {
+              navigation.navigate("Home");
+            }
+          });
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     const createTable = () => {
       db.transaction((tx) => {
         tx.executeSql(
@@ -64,6 +80,7 @@ const Home = ({navigation }) => {
     };
 
     useEffect(() => {
+      checkData()
       createTable();
     },[])
 
