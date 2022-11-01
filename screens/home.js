@@ -25,11 +25,11 @@ const Home = ({navigation }) => {
         alert("Please input name !")
         return
     }
-    if(!date) {
+    if(!destination) {
         alert("Please input destination !")
         return
     }
-    if(!destination) {
+    if(!date) {
         alert("Please pick date of trip !")
         return
     }
@@ -136,6 +136,10 @@ const Home = ({navigation }) => {
         style={styles.CustomButton}
           onPress={submitted} title="Submit"
         ><Text>Add To Database</Text></TouchableOpacity>
+        <TouchableOpacity 
+        style={styles.CustomButton}
+          onPress={() => navigation.navigate('Detail')} title="Submit"
+        ><Text>Detail</Text></TouchableOpacity>
       {/* </View> */}
   </View>
   </SafeAreaView>
