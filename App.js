@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, Text, View } from 'react-native';
 import Detail from './screens/detail';
 import Home from "./screens/home";
+import EditDetail from "./screens/editDetail";
 
 const Stack = createStackNavigator();
 export default function App() {
@@ -17,8 +18,10 @@ export default function App() {
         <Stack.Screen
           name="Detail"
           component={Detail}
-          options={{ title: 'Detail' }}
+          options={{ title: 'All Trips' }}
         />
+        <Stack.Screen name="EditDetail" 
+        component={EditDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

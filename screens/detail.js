@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {TouchableOpacity, Alert, StyleSheet, Text, TextInput, View, FlatList } from "react-native";
+import {TouchableOpacity, Alert, StyleSheet, Text, TextInput, View, FlatList, ScrollView } from "react-native";
 import {DatabaseConnected} from '../database/database'
 
 const db =  DatabaseConnected.getConnection()
@@ -36,7 +36,7 @@ const Detail = ({ navigation }) => {
   
   const listItemView = (item) => {
     return (
-      <TouchableOpacity >
+      <TouchableOpacity onPress={() => navigation.navigate("EditDetail", { item })}>
       <View
         key={item.Id}
         style={{ borderRadius: 5, margin: 5,
@@ -54,19 +54,23 @@ const Detail = ({ navigation }) => {
 
   return (
     <View style={styles.body}>
-      <FlatList
+        <FlatList
             data={listDetail}
             ItemSeparatorComponent={listViewItemSeparator}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => listItemView(item)}
       />
+        <TouchableOpacity 
+        style={styles.CustomButton}
+          onPress={() => navigation.navigate('Home')} title="Submit"
+        ><Text>Create Trip</Text></TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   body: {
-    flex: 1,
+    flex:1,
     borderRadius: 4,
   },
   
@@ -93,6 +97,17 @@ const styles = StyleSheet.create({
   updateInput: {
     alignItems: "center",
   },
+  CustomButton:{
+    borderWidth: 1,
+    borderRadius: 10,
+    width:"90%",
+    marginLeft:'5%',
+    height:40,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent:'space-around',
+    marginBottom: 50
+  }
 });
 
 export default Detail;
