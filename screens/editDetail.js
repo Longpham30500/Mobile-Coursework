@@ -64,6 +64,25 @@ const EditDetail = ({route, navigation }) => {
     } 
     }
 
+    const deleteDetail = () => {
+      try {
+        db.transaction((tx) => {
+          tx.executeSql(
+            "DELETE FROM Detail WHERE Id = ?",
+            [item.Id],
+            (tx, result) => {
+              alert("Deleted !!!");
+            }
+          );
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      navigation.navigate("Home");
+      navigation.navigate("Detail");
+    };
+
+
 
 
 
@@ -106,7 +125,7 @@ const EditDetail = ({route, navigation }) => {
         ><Text>Edit</Text></TouchableOpacity>
                 <TouchableOpacity 
         style={styles.CustomButton}
-          onPress={submitted} title="Submit"
+          onPress={deleteDetail} title="Submit"
         ><Text>Delete</Text></TouchableOpacity>
 
       {/* </View> */}
